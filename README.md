@@ -39,13 +39,20 @@ Epic multiplayer pong
     - [ ] Game setup on websocket connection
         - [ ] Player management
         - [ ] Games management (starting & joining games)
-    - [ ] Input handling
     - [ ] Paddle class
     - [ ] Paddle movement
     - [ ] Ball class
     - [ ] Ball movement & collisions
-    - [ ]
+    - [ ] Input handling
+      - [ ] Touch input handling
+    - [ ] ...
 - [ ] Graphics & UI
     - [ ] Paddle
     - [ ] Ball
-    - [ ]
+    - [ ] ...
+
+## Ideas
+
+- WebGL/Three.js?
+- Particle system
+-
