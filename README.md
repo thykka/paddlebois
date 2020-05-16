@@ -2,7 +2,7 @@
 
 Epic multiplayer pong
 
-## Usage
+## Development setup
 
 1. clone the repo
     ```sh
