@@ -4,9 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "npm-run-all --parallel watch:server watch:build",
+    "server": "nodemon server/server.mjs",
+    "watch:server": "nodemon server/index.mjs --watch \"./server\"",
+    "build": "webpack --mode=development",
+    "watch:build": "webpack --watch --mode=development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "thykka",
+  "private": true,
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
@@ -14,6 +20,14 @@
     "ws": "^7.3.0"
   },
   "devDependencies": {
-    "eslint": "^7.0.0"
+    "css-loader": "^3.5.3",
+    "eslint": "^7.0.0",
+    "nodemon": "^2.0.4",
+    "npm-run-all": "^4.1.5",
+    "sass": "^1.26.5",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   }
 }

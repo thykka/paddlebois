@@ -1,4 +1,4 @@
-import Config from './config.mjs';
+import Config from '../config.mjs';
 
 import path from 'path';
 import fs from 'fs';
@@ -27,9 +27,9 @@ app.get('/', (request, response) => {
   response.render('index', { foo: 'bar' });
 });
 
-const wss = new WebSocket.Server({
-  port: Config.wsServerPort
-});
+app.use(express.static('dist'));
+
+const wss = new WebSocket.Server({ server });
 
 wss.on('connection', handleConnection);
 
