@@ -29,3 +29,23 @@ Epic multiplayer pong
 
 5. open the [client](https://127.0.0.1:8443/)
 
+## Todo
+
+- [ ] Implement basic game mechanics
+    - [ ] Player state class
+    - [ ] Game state class
+    - [ ] client: Player setup (input for nickname, avatar?)
+    - [ ] server: Global state (list of games & players, etc.)
+    - [ ] Game setup on websocket connection
+        - [ ] Player management
+        - [ ] Games management (starting & joining games)
+    - [ ] Input handling
+    - [ ] Paddle class
+    - [ ] Paddle movement
+    - [ ] Ball class
+    - [ ] Ball movement & collisions
+    - [ ]
+- [ ] Graphics & UI
+    - [ ] Paddle
+    - [ ] Ball
+    - [ ]
