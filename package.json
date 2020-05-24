@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm-run-all --parallel watch:server watch:build",
-    "server": "nodemon server/server.mjs",
+    "server": "nodemon server/index.mjs",
     "watch:server": "nodemon server/index.mjs --watch \"./server\"",
     "build": "webpack --mode=development",
     "watch:build": "webpack --watch --mode=development",
