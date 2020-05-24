@@ -1,4 +1,5 @@
 const Config = {
+  hostname: '127.0.0.1',
   serverPort: 8443,
   keyFile: './key.pem',
   certFile: './cert.pem',
@@ -6,8 +7,10 @@ const Config = {
   wsServerPort: 8444,
 };
 
-// make WS port available for client
+// make WS connection details available for client
 const serverPort = Config.serverPort;
-export { serverPort };
+const hostname = Config.hostname;
+
+export { serverPort, hostname };
 
 export default Config;

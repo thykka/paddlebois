@@ -20,7 +20,7 @@ const server = https.createServer({
 }, app);
 
 server.listen(Config.serverPort, () => {
-  console.log(`Listening at https://127.0.0.1:${ Config.serverPort }`);
+  console.log(`Listening at https://${ Config.hostname }:${ Config.serverPort }`);
 });
 
 app.get('/', (request, response) => {
