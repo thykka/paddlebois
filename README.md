@@ -43,8 +43,9 @@ Epic multiplayer pong
     - [ ] Paddle movement
     - [ ] Ball class
     - [ ] Ball movement & collisions
-    - [ ] Input handling
-      - [ ] Touch input handling
+    - [X] Input handling (client)
+    - [ ] Input handling (server)
+    - [ ] Touch input handling
     - [ ] ...
 - [ ] Graphics & UI
     - [ ] Paddle
