@@ -7,6 +7,8 @@ import express from 'express';
 import mustacheExpress from 'mustache-express';
 import WebSocket from 'ws';
 
+import { ConnectionManager } from './game.mjs';
+
 const serverPath = path.resolve();
 const app = express();
 app.engine('html', mustacheExpress());
@@ -31,13 +33,5 @@ app.use(express.static('dist'));
 
 const wss = new WebSocket.Server({ server });
 
-wss.on('connection', handleConnection);
+const cm = new ConnectionManager(wss);
 
-
-function handleConnection(ws) {
-  ws.on('message', handleMessage);
-}
-
-function handleMessage(message) {
-  console.log(`message: ${ message }`);
-}
