@@ -21,7 +21,8 @@ class Game {
     Object.assign(this, defaults, options);
 
     this.connection = new Connection(
-      this, () => this.handleConnected()
+      this,
+      () => this.handleConnected()
     );
   }
 
@@ -73,6 +74,18 @@ class Game {
       }) || []
     )[0];
   }
+
+  handleAction(action, data) {
+    switch(action) {
+      case 'confirmNewPlayer': {
+        console.log(data);
+        break;
+      }
+      default: {
+        console.warn('Unkown action: ' + action);
+      }
+    }
+  }
 }
 
 class Connection {
@@ -84,6 +97,7 @@ class Connection {
     this.ws.onopen = this.handleOpen.bind(this);
     this.ws.onerror = this.handleError.bind(this);
     this.ws.onmessage = this.handleMessage.bind(this);
+    window.addEventListener('beforeunload', this.disconnect.bind(this));
   }
 
   sendAction(actionType, data) {
@@ -91,8 +105,8 @@ class Connection {
   }
 
   handleOpen() {
-    console.log('connected to ' + this.wsUrl)
-    this.ws.send('Let me in!');
+    console.log('connected to ' + this.wsUrl);
+    this.sendAction('newPlayer', { nickname: 'Player 1' });
     this.callback();
   }
 
@@ -100,7 +114,17 @@ class Connection {
     console.error(e)
   }
 
-  handleMessage(data) {
-    console.log(data);
+  handleMessage(message) {
+    const parsedData = JSON.parse(message.data);
+    const { action, data } = parsedData;
+    if(action) {
+      this.game.handleAction(action, data);
+    } else {
+      console.warn('No action in message: ' + message);
+    }
+  }
+
+  disconnect() {
+    this.ws.close();
   }
 }
