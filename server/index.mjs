@@ -7,7 +7,7 @@ import express from 'express';
 import mustacheExpress from 'mustache-express';
 import WebSocket from 'ws';
 
-import { ConnectionManager } from './game.mjs';
+import ConnectionManager from './connection-manager.mjs';
 
 const serverPath = path.resolve();
 const app = express();
@@ -26,7 +26,7 @@ server.listen(Config.serverPort, () => {
 });
 
 app.get('/', (request, response) => {
-  response.render('index', { foo: 'bar' });
+  response.render('index', cm);
 });
 
 app.use(express.static('dist'));

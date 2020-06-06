@@ -78,11 +78,15 @@ class Game {
   handleAction(action, data) {
     switch(action) {
       case 'confirmNewPlayer': {
-        console.log(data);
+        console.log('New player confirmed', data);
+        break;
+      }
+      case 'playerLeft': {
+        console.log('Player left', data);
         break;
       }
       default: {
-        console.warn('Unkown action: ' + action);
+        console.warn('Unkown action', action, data);
       }
     }
   }

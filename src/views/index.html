@@ -6,7 +6,22 @@
   <title>PaddleBois</title>
 </head>
 <body>
-  Hellow, orld! {{ foo }}
+  <ul>
+    {{ #players }}
+    <li>{{ connectionId }} <button data-game="{{ id }}">challenge</button></li>
+    {{ /players }}
+    {{ ^players }}
+    <li>No active players</li>
+    {{ /players }}
+  </ul>
+  <ul>
+    {{ #games }}
+    <li>{{ id }} <button data-game="{{ id }}">join</button></li>
+    {{ /games }}
+    {{ ^games }}
+    <li>No active games</li>
+    {{ /games }}
+  </ul>
   <script src="index.js"></script>
 </body>
 </html>
