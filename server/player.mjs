@@ -1,6 +1,9 @@
 class Player {
-  constructor() {
+  constructor(playerOptions = {}) {
+    const defaults = {
 
+    };
+    Object.assign(this, defaults, playerOptions);
   }
 }
 

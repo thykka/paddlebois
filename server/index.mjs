@@ -7,7 +7,7 @@ import express from 'express';
 import mustacheExpress from 'mustache-express';
 import WebSocket from 'ws';
 
-import ConnectionManager from './connection-manager.mjs';
+import Connections from './connections.mjs';
 
 const serverPath = path.resolve();
 const app = express();
@@ -33,5 +33,5 @@ app.use(express.static('dist'));
 
 const wss = new WebSocket.Server({ server });
 
-const cm = new ConnectionManager(wss);
+const cm = new Connections(wss);
 

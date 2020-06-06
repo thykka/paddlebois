@@ -3,7 +3,7 @@ class Ball {
 
   }
 
-  update(S, paddle) {
+  update(S, ball) {
 
   }
 }

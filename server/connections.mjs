@@ -2,7 +2,7 @@ import Util from './game-util.mjs';
 import Player from './player.mjs';
 import Game from './game.mjs';
 
-class ConnectionManager {
+class Connections {
   constructor(wss) {
     this.wss = wss;
     this.connections = [];
@@ -10,8 +10,9 @@ class ConnectionManager {
     this.players = [];
 
     this.actions = {
-      newPlayer: actionData => this.addPlayer(actionData),
-      newGame: actionData => this.addGame(actionData),
+      newPlayer: actionData => this.addNewPlayer(actionData),
+      newGame: actionData => this.addNewGame(actionData),
+      joinGame: actionData => this.joinGame(actionData),
       playerInput: actionData => {
         console.log(actionData);
       }
@@ -40,7 +41,6 @@ class ConnectionManager {
       ws,
       id: Util.createId()
     }
-
     this.connections.push(connection);
 
     // event listeners
@@ -79,6 +79,15 @@ class ConnectionManager {
     connection.ws.send(JSON.stringify({ action: actionType, data }));
   }
 
+  broadcastAction(actionType, data, connectionFilter) {
+    let connections = typeof connectionFilter === 'function'
+      ? this.connections.filter(connectionFilter)
+      : this.connections;
+    connections.forEach(connection => {
+      this.sendAction(connection, actionType, data);
+    })
+  }
+
   getConnection(id) {
     return this.connections.find(c => c.id === id);
   }
@@ -87,14 +96,21 @@ class ConnectionManager {
     return this.players.find(p => p.connectionId === connectionId);
   }
 
-  addPlayer(actionData) {
+  addNewPlayer(actionData) {
     const player = {
-      nickname: actionData.nickname || actionData.connectionId || 'incognito',
+      nickname: actionData.nickname || actionData.connectionId,
       connectionId: actionData.connectionId
     };
     this.players.push(player);
+
     const connection = this.getConnection(actionData.connectionId);
     this.sendAction(connection, 'confirmNewPlayer', player);
+    this.broadcastAction(
+      'playerJoined',
+      { ...player },
+      connection => connection.id !== actionData.connectionId
+    );
+
     console.log(`${ this.players.length } players active`);
   }
 
@@ -102,12 +118,12 @@ class ConnectionManager {
     const { nickname } = this.getPlayer(connectionId);
     this.players = this.players.filter(p => p.connectionId !== connectionId);
 
-    this.wss.clients.forEach(client => {
-      this.sendAction({ ws: client }, 'playerLeft', {
-        nickname, connectionId
-      });
-    });
+    this.broadcastAction('playerLeft', { nickname, connectionId });
+  }
+
+  addNewGame() {
+
   }
 }
 
-export default ConnectionManager;
+export default Connections;

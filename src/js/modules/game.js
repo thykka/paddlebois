@@ -1,11 +1,21 @@
 import { hostname, serverPort } from '../../../config.mjs';
 
-document.addEventListener('DOMContentLoaded', initGame);
+const nickInput = document.getElementById('nickname');
+const createPlayerForm = document.getElementById('createPlayer');
 
+createPlayerForm.addEventListener('submit', ev => {
+  ev.preventDefault();
+  const nickname = nickInput.value;
+  const game = new Game({ nickname });
+})
+
+/*
+document.addEventListener('DOMContentLoaded', initGame);
 function initGame() {
   const game = new Game();
   console.log(game)
 }
+*/
 
 class Game {
   constructor(options = {}) {
@@ -20,13 +30,16 @@ class Game {
     }
     Object.assign(this, defaults, options);
 
-    this.connection = new Connection(
-      this,
-      () => this.handleConnected()
-    );
+    this.connection = new Connection({
+      game: this,
+      connectedCallback: (connection) => {
+        this.handleConnected(connection)
+      }
+    });
   }
 
-  handleConnected() {
+  handleConnected(connection) {
+    console.log('connected to ' + connection.wsUrl);
     this.initKeys();
   }
 
@@ -85,6 +98,10 @@ class Game {
         console.log('Player left', data);
         break;
       }
+      case 'playerJoined': {
+        console.log('Player joined', data);
+        break;
+      }
       default: {
         console.warn('Unkown action', action, data);
       }
@@ -93,10 +110,10 @@ class Game {
 }
 
 class Connection {
-  constructor(game, callback) {
-    this.game = game;
-    this.callback = callback;
-    this.wsUrl = `wss://${ game.hostname }:${ game.port }`;
+  constructor(options) {
+    this.game = options.game;
+    this.connectedCallback = options.connectedCallback;
+    this.wsUrl = `wss://${ options.game.hostname }:${ options.game.port }`;
     this.ws = new WebSocket(this.wsUrl);
     this.ws.onopen = this.handleOpen.bind(this);
     this.ws.onerror = this.handleError.bind(this);
@@ -109,9 +126,8 @@ class Connection {
   }
 
   handleOpen() {
-    console.log('connected to ' + this.wsUrl);
-    this.sendAction('newPlayer', { nickname: 'Player 1' });
-    this.callback();
+    this.sendAction('newPlayer', { nickname: this.game.nickname });
+    this.connectedCallback(this);
   }
 
   handleError(e) {

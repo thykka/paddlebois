@@ -1,4 +1,4 @@
-import Player from './player.mjs';
+
 import Paddle from './paddle.mjs';
 import Ball from './ball.mjs';
 
@@ -18,13 +18,13 @@ class Game {
   }
 
   update(S = this.state, input = this.input) {
-    S.paddles.forEach(paddle => this.updatePaddle(S, paddle));
+    S.paddles.forEach(paddle => this.updatePaddle(S, paddle, input));
     S.balls.forEach(ball => this.updateBall(S, ball));
   }
 
-  addPlayer(playerData) {
-    const player = Player.new();
-    this.players.push(player);
+  addPlayer(connectionId) {
+    if(this.players.length >= 2) throw Error('Cannot add more players to this game');
+    this.players.push(connectionId);
   }
 }
 
