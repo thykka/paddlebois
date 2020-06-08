@@ -1,3 +1,3 @@
 import '../scss/style.scss';
-import './modules/game';
+import './modules/game-client.js';
 

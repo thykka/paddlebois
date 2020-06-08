@@ -1,3 +1,6 @@
+
+console.clear();
+
 import Config from '../config.mjs';
 
 import path from 'path';
@@ -5,9 +8,8 @@ import fs from 'fs';
 import https from 'https';
 import express from 'express';
 import mustacheExpress from 'mustache-express';
-import WebSocket from 'ws';
 
-import Connections from './connections.mjs';
+import GameServer from './game-server.mjs';
 
 const serverPath = path.resolve();
 const app = express();
@@ -21,17 +23,17 @@ const server = https.createServer({
   passphrase: Config.certPass
 }, app);
 
-server.listen(Config.serverPort, () => {
-  console.log(`Listening at https://${ Config.hostname }:${ Config.serverPort }`);
-});
 
 app.get('/', (request, response) => {
-  response.render('index', cm);
+  response.render('index', {});
 });
 
 app.use(express.static('dist'));
 
-const wss = new WebSocket.Server({ server });
+server.listen(Config.serverPort, () => {
+  console.log(`Listening at https://${ Config.hostname }:${ Config.serverPort }`);
+});
 
-const cm = new Connections(wss);
-
+const gameServer = new GameServer({
+  server
+})
