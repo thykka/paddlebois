@@ -4,3 +4,7 @@ html {
   background-color: $color-bg;
   color: $color-fg;
 }
+
+canvas {
+  outline: 1px solid #333;
+}
